@@ -74,6 +74,10 @@ const currentView = ref('home')
 
 This works! It's also exactly what's on the `step-1-manual-views` branch.
 
+<style>
+.slidev-layout pre { font-size: 0.8em; line-height: 1.4; }
+</style>
+
 ---
 
 # What breaks with manual swapping
@@ -278,6 +282,11 @@ const currentView = ref('home')
 
 </v-clicks>
 
+<style>
+.slidev-layout pre,
+.slidev-layout .shiki-magic-move-container { font-size: 0.78em; line-height: 1.35; }
+</style>
+
 ---
 
 # LIVE: basic routing + Devtools
@@ -351,6 +360,11 @@ export const router = createRouter({
 
 One route (`/dishes/:id`) now matches `/dishes/1`, `/dishes/2`, `/dishes/anything`.
 
+<style>
+.slidev-layout pre,
+.slidev-layout .shiki-magic-move-container { font-size: 0.8em; line-height: 1.4; }
+</style>
+
 ---
 
 # Reading the param: `DishDetail.vue`
@@ -382,6 +396,10 @@ const dish = computed(() => dishes.find((d) => d.id === Number(route.params.id))
 Note the `Number(...)` — `route.params.id` is **always a string**, even though our dish IDs are numbers.
 
 </v-click>
+
+<style>
+.slidev-layout pre { font-size: 0.8em; line-height: 1.4; }
+</style>
 
 ---
 
@@ -478,6 +496,15 @@ const filtered = computed(() => {
 ```
 ````
 
+<style>
+.slidev-layout pre,
+.slidev-layout .shiki-magic-move-container { font-size: 0.68em; line-height: 1.3; }
+</style>
+
+---
+
+# Query params: what we get for free
+
 The `filtered` logic barely changes — only *where the state lives* does.
 
 <v-clicks>
@@ -487,6 +514,8 @@ The `filtered` logic barely changes — only *where the state lives* does.
 - Back/forward move through filter changes too
 
 </v-clicks>
+
+<!-- Tie each of these back to the "filters that disappear" slide — this is the concrete payoff for moving state into the URL. -->
 
 ---
 
