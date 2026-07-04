@@ -1,0 +1,117 @@
+:root {
+  --text: #2d2a32;
+  --bg: #fff;
+  --border: #e5e4e7;
+  --accent: #aa3bff;
+  --accent-bg: rgba(170, 59, 255, 0.1);
+  font: 16px/1.5 system-ui, 'Segoe UI', Roboto, sans-serif;
+  color: var(--text);
+  background: var(--bg);
+}
+
+@media (prefers-color-scheme: dark) {
+  :root {
+    --text: #e5e4e7;
+    --bg: #16171d;
+    --border: #2e303a;
+    --accent: #c084fc;
+    --accent-bg: rgba(192, 132, 252, 0.15);
+  }
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+}
+
+#app {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 24px 48px;
+}
+
+nav.app-nav {
+  display: flex;
+  gap: 8px;
+  padding: 20px 0;
+  margin-bottom: 24px;
+  border-bottom: 1px solid var(--border);
+}
+
+nav.app-nav a,
+nav.app-nav button {
+  font: inherit;
+  color: var(--text);
+  text-decoration: none;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 8px 14px;
+  border-radius: 6px;
+}
+
+nav.app-nav a:hover,
+nav.app-nav button:hover {
+  background: var(--accent-bg);
+}
+
+nav.app-nav a.router-link-exact-active,
+nav.app-nav button.active {
+  font-weight: 600;
+  color: var(--accent);
+  background: var(--accent-bg);
+}
+
+table.dish-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+table.dish-table th,
+table.dish-table td {
+  text-align: left;
+  padding: 10px 8px;
+  border-bottom: 1px solid var(--border);
+}
+
+table.dish-table a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+table.dish-table a:hover {
+  color: var(--accent);
+  text-decoration: underline;
+}
+
+.filters {
+  display: flex;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.filters select {
+  font: inherit;
+  padding: 6px 8px;
+  border-radius: 6px;
+  border: 1px solid var(--border);
+  background: var(--bg);
+  color: var(--text);
+}
+
+.dish-detail .emoji {
+  font-size: 64px;
+  line-height: 1;
+}
+
+.back-link {
+  display: inline-block;
+  margin-top: 16px;
+}
+
+.not-found {
+  padding: 24px 0;
+}
