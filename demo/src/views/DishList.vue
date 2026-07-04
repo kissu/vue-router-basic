@@ -15,7 +15,11 @@ import { dishes } from '../data/dishes'
       </thead>
       <tbody>
         <tr v-for="dish in dishes" :key="dish.id">
-          <td>{{ dish.emoji }} {{ dish.name }}</td>
+          <td>
+            <router-link :to="{ name: 'dish-detail', params: { id: dish.id } }">
+              {{ dish.emoji }} {{ dish.name }}
+            </router-link>
+          </td>
           <td><span class="badge" :class="`badge--${dish.category}`">{{ dish.category }}</span></td>
           <td>${{ dish.price.toFixed(2) }}</td>
         </tr>
