@@ -1,662 +1,528 @@
 ---
-# try also 'default' to start simple
-theme: seriph
-# random image from a curated Unsplash collection by Anthony
-# like them? see https://unsplash.com/collections/94734566/slidev
-background: https://cover.sli.dev
-# some information about your slides (markdown enabled)
-title: Welcome to Slidev
+theme: default
+title: Vue Router Basics
 info: |
-  ## Slidev Starter Template
-  Presentation slides for developers.
-
-  Learn more at [Sli.dev](https://sli.dev)
-# apply UnoCSS classes to the current slide
+  ## Vue Router Basics
+  Routes, params, and navigation — a hands-on 30-minute course.
 class: text-center
-# https://sli.dev/features/drawing
-drawings:
-  persist: false
-# slide transition: https://sli.dev/guide/animations.html#slide-transitions
 transition: slide-left
-# enable Comark Syntax: https://comark.dev/syntax/markdown
-comark: true
-# duration of the presentation
-duration: 35min
 ---
 
-# Welcome to Slidev
+# Vue Router Basics
 
-Presentation slides for developers
+Routes · Params · Navigation
 
-<div @click="$slidev.nav.next" class="mt-12 py-1" hover:bg="white op-10">
-  Press Space for next page <carbon:arrow-right />
+<div class="pt-8 opacity-70">
+A hands-on 30-minute tour, for people who already know Vue
 </div>
 
-<div class="abs-br m-6 text-xl">
-  <button @click="$slidev.nav.openInEditor()" title="Open in Editor" class="slidev-icon-btn">
-    <carbon:edit />
-  </button>
-  <a href="https://github.com/slidevjs/slidev" target="_blank" class="slidev-icon-btn">
-    <carbon:logo-github />
-  </a>
-</div>
-
-<!--
-The last comment block of each slide will be treated as slide notes. It will be visible and editable in Presenter Mode along with the slide. [Read more in the docs](https://sli.dev/guide/syntax.html#notes)
--->
+<!-- Confirm screen share is up. Have the demo repo open in one terminal pane (pnpm dev already running) and a browser tab ready in another — you'll switch over to the browser several times today. -->
 
 ---
-transition: fade-out
----
 
-# What is Slidev?
+# Today's agenda
 
-Slidev is a slides maker and presenter designed for developers, consist of the following features
+<v-clicks>
 
-- 📝 **Text-based** - focus on the content with Markdown, and then style them later
-- 🎨 **Themable** - themes can be shared and re-used as npm packages
-- 🧑‍💻 **Developer Friendly** - code highlighting, live coding with autocompletion
-- 🤹 **Interactive** - embed Vue components to enhance your expressions
-- 🎥 **Recording** - built-in recording and camera view
-- 📤 **Portable** - export to PDF, PPTX, PNGs, or even a hostable SPA
-- 🛠 **Hackable** - virtually anything that's possible on a webpage is possible in Slidev
-<br>
-<br>
+- Why do we even need a router?
+- SPA vs MPA — two ways to serve pages
+- Navigating between pages (and why Devtools matter)
+- Route params — one dynamic page, many dishes
+- Query params — filters and sort that survive a refresh
 
-Read more about [Why Slidev?](https://sli.dev/guide/why)
+</v-clicks>
 
-<!--
-You can have `style` tag in markdown to override the style for the current page.
-Learn more: https://sli.dev/features/slide-scope-style
--->
-
-<style>
-h1 {
-  background-color: #2B90B6;
-  background-image: linear-gradient(45deg, #4EC5D4 10%, #146b8c 20%);
-  background-size: 100%;
-  -webkit-background-clip: text;
-  -moz-background-clip: text;
-  -webkit-text-fill-color: transparent;
-  -moz-text-fill-color: transparent;
-}
-</style>
-
-<!--
-Here is another comment.
--->
+<!-- Keep this to ~30s, it's just a preview. -->
 
 ---
-transition: slide-up
-level: 2
----
 
-# Navigation
+# Why do we even need a router?
 
-Hover on the bottom-left corner to see the navigation's controls panel, [learn more](https://sli.dev/guide/ui#navigation-bar)
+Our demo app — **The Router Bistro** — has three "pages": Home, Dishes, About.
 
-## Keyboard Shortcuts
+We haven't touched routing yet. So how do we show different content for each one?
 
-|                                                     |                             |
-| --------------------------------------------------- | --------------------------- |
-| <kbd>right</kbd> / <kbd>space</kbd>                 | next animation or slide     |
-| <kbd>left</kbd>  / <kbd>shift</kbd><kbd>space</kbd> | previous animation or slide |
-| <kbd>up</kbd>                                       | previous slide              |
-| <kbd>down</kbd>                                     | next slide                  |
+The obvious answer: some state that says "which page am I on", and a big conditional.
 
-<!-- https://sli.dev/guide/animations.html#click-animation -->
-<img
-  v-click
-  class="absolute -bottom-9 -left-7 w-80 opacity-50"
-  src="https://sli.dev/assets/arrow-bottom-left.svg"
-  alt=""
-/>
-<p v-after class="absolute bottom-23 left-45 opacity-30 transform -rotate-10">Here!</p>
+<!-- Pause and ask the room how THEY'd solve this with what they already know (v-if? v-show?). Let a couple of answers land before revealing the next slide. -->
 
 ---
-layout: two-cols
-layoutClass: gap-16
----
 
-# Table of contents
-
-You can use the `Toc` component to generate a table of contents for your slides:
-
-```html
-<Toc minDepth="1" maxDepth="1" />
-```
-
-The title will be inferred from your slide content, or you can override it with `title` and `level` in your frontmatter.
-
-::right::
-
-<Toc text-sm minDepth="1" maxDepth="2" />
-
----
-layout: image-right
-image: https://cover.sli.dev
----
-
-# Code
-
-Use code snippets and get the highlighting directly, and even types hover!
-
-```ts [filename-example.ts] {all|4|6|6-7|9|all} twoslash
-// TwoSlash enables TypeScript hover information
-// and errors in markdown code blocks
-// More at https://shiki.style/packages/twoslash
-import { computed, ref } from 'vue'
-
-const count = ref(0)
-const doubled = computed(() => count.value * 2)
-
-doubled.value = 2
-```
-
-<arrow v-click="[4, 5]" x1="350" y1="310" x2="195" y2="342" color="#953" width="2" arrowSize="1" />
-
-<!-- This allow you to embed external code blocks -->
-<<< @/snippets/external.ts#snippet
-
-<!-- Footer -->
-
-[Learn more](https://sli.dev/features/line-highlighting)
-
-<!-- Inline style -->
-<style>
-.footnotes-sep {
-  @apply mt-5 opacity-10;
-}
-.footnotes {
-  @apply text-sm opacity-75;
-}
-.footnote-backref {
-  display: none;
-}
-</style>
-
-<!--
-Notes can also sync with clicks
-
-[click] This will be highlighted after the first click
-
-[click] Highlighted with `count = ref(0)`
-
-[click:3] Last click (skip two clicks)
--->
-
----
-level: 2
----
-
-# Shiki Magic Move
-
-Powered by [shiki-magic-move](https://shiki-magic-move.netlify.app/), Slidev supports animations across multiple code snippets.
-
-Add multiple code blocks and wrap them with <code>````md magic-move</code> (four backticks) to enable the magic move. For example:
-
-````md magic-move {lines: true}
-```ts {*|2|*}
-// step 1
-const author = reactive({
-  name: 'John Doe',
-  books: [
-    'Vue 2 - Advanced Guide',
-    'Vue 3 - Basic Guide',
-    'Vue 4 - The Mystery'
-  ]
-})
-```
-
-```ts {*|1-2|3-4|3-4,8}
-// step 2
-export default {
-  data() {
-    return {
-      author: {
-        name: 'John Doe',
-        books: [
-          'Vue 2 - Advanced Guide',
-          'Vue 3 - Basic Guide',
-          'Vue 4 - The Mystery'
-        ]
-      }
-    }
-  }
-}
-```
-
-```ts
-// step 3
-export default {
-  data: () => ({
-    author: {
-      name: 'John Doe',
-      books: [
-        'Vue 2 - Advanced Guide',
-        'Vue 3 - Basic Guide',
-        'Vue 4 - The Mystery'
-      ]
-    }
-  })
-}
-```
-
-Non-code blocks are ignored.
+# The naive way: `App.vue`
 
 ```vue
-<!-- step 4 -->
 <script setup>
-const author = {
-  name: 'John Doe',
-  books: [
-    'Vue 2 - Advanced Guide',
-    'Vue 3 - Basic Guide',
-    'Vue 4 - The Mystery'
-  ]
-}
-</script>
-```
-````
-
----
-
-# Components
-
-<div grid="~ cols-2 gap-4">
-<div>
-
-You can use Vue components directly inside your slides.
-
-We have provided a few built-in components like `<Tweet/>`, `<BlueSky/>`, and `<Youtube/>` that you can use directly. And adding your custom components is also super easy.
-
-```html
-<Counter :count="10" />
-```
-
-<!-- ./components/Counter.vue -->
-<Counter :count="10" m="t-4" />
-
-Check out [the guides](https://sli.dev/builtin/components.html) for more.
-
-</div>
-<div>
-
-```html
-<Tweet id="1390115482657726468" />
-```
-
-<Tweet id="1390115482657726468" scale="0.65" />
-
-</div>
-</div>
-
-<!--
-Presenter note with **bold**, *italic*, and ~~striked~~ text.
-
-Also, HTML elements are valid:
-<div class="flex w-full">
-  <span style="flex-grow: 1;">Left content</span>
-  <span>Right content</span>
-</div>
--->
-
----
-class: px-20
----
-
-# Themes
-
-Slidev comes with powerful theming support. Themes can provide styles, layouts, components, or even configurations for tools. Switching between themes by just **one edit** in your frontmatter:
-
-<div grid="~ cols-2 gap-2" m="t-2">
-
-```yaml
----
-theme: default
----
-```
-
-```yaml
----
-theme: seriph
----
-```
-
-<img border="rounded" src="https://github.com/slidevjs/themes/blob/main/screenshots/theme-default/01.png?raw=true" alt="">
-
-<img border="rounded" src="https://github.com/slidevjs/themes/blob/main/screenshots/theme-seriph/01.png?raw=true" alt="">
-
-</div>
-
-Read more about [How to use a theme](https://sli.dev/guide/theme-addon#use-theme) and
-check out the [Awesome Themes Gallery](https://sli.dev/resources/theme-gallery).
-
----
-
-# Clicks Animations
-
-You can add `v-click` to elements to add a click animation.
-
-<div v-click>
-
-This shows up when you press <kbd>space</kbd> or <kbd>right</kbd>, or click outside the slide on the right.
-
-```html
-<div v-click>This shows up when you trigger a click animation.</div>
-```
-
-</div>
-
-<p v-click>
-You can also add modifiers to change the animation:
-</p>
-
-<div class="grid gap-3 mt-4 text-sm" style="grid-template-columns: repeat(3, 1fr) 1.5fr 1fr">
-  <div v-after.up class="p-3 rounded border border-primary/20 bg-primary/10">
-    <div class="font-mono text-xs opacity-60 mb-1">v-click.up</div>
-    <div>Slide from bottom</div>
-  </div>
-  <div v-click.fade-in class="p-3 rounded border border-primary/30 bg-primary/15">
-    <div class="font-mono text-xs opacity-60 mb-1">v-click.fade-in</div>
-    <div>Fade in</div>
-  </div>
-  <div v-click.fade class="p-3 rounded border border-primary/40 bg-primary/20">
-    <div class="font-mono text-xs opacity-60 mb-1">v-click.fade</div>
-    <div>Dim (0.5 opacity)</div>
-  </div>
-  <div v-click.fade.right.scale class="p-3 rounded border border-primary/50 bg-primary/25">
-    <div class="font-mono text-xs opacity-60 mb-1">v-click.fade.right.scale</div>
-    <div>Composed</div>
-  </div>
-  <div v-click.none class="p-3 rounded border border-primary/60 bg-primary/30">
-    <div class="font-mono text-xs opacity-60 mb-1">v-click.none</div>
-    <div>No transition</div>
-  </div>
-</div>
-
-<v-click>
-
-The <span v-mark.red="7"><code>v-mark</code> directive</span>
-also allows you to add
-<span v-mark.circle.orange="8">inline marks</span>
-, powered by [Rough Notation](https://roughnotation.com/):
-
-```html
-<span v-mark.underline.orange>inline markers</span>
-```
-
-</v-click>
-
-<div v-click mt-12>
-
-[Learn more](https://sli.dev/guide/animations#click-animation)
-
-</div>
-
----
-
-# Motions
-
-Motion animations are powered by [@vueuse/motion](https://motion.vueuse.org/), triggered by `v-motion` directive.
-
-```html
-<div
-  v-motion
-  :initial="{ x: -80 }"
-  :enter="{ x: 0 }"
-  :click-3="{ x: 80 }"
-  :leave="{ x: 1000 }"
->
-  Slidev
-</div>
-```
-
-<div class="w-60 relative">
-  <div class="relative w-40 h-40">
-    <img
-      v-motion
-      :initial="{ x: 800, y: -100, scale: 1.5, rotate: -50 }"
-      :enter="final"
-      class="absolute inset-0"
-      src="https://sli.dev/logo-square.png"
-      alt=""
-    />
-    <img
-      v-motion
-      :initial="{ y: 500, x: -100, scale: 2 }"
-      :enter="final"
-      class="absolute inset-0"
-      src="https://sli.dev/logo-circle.png"
-      alt=""
-    />
-    <img
-      v-motion
-      :initial="{ x: 600, y: 400, scale: 2, rotate: 100 }"
-      :enter="final"
-      class="absolute inset-0"
-      src="https://sli.dev/logo-triangle.png"
-      alt=""
-    />
-  </div>
-
-  <div
-    class="text-5xl absolute top-14 left-40 text-[#2B90B6] -z-1"
-    v-motion
-    :initial="{ x: -80, opacity: 0}"
-    :enter="{ x: 0, opacity: 1, transition: { delay: 2000, duration: 1000 } }">
-    Slidev
-  </div>
-</div>
-
-<!-- vue script setup scripts can be directly used in markdown, and will only affects current page -->
-<script setup lang="ts">
-const final = {
-  x: 0,
-  y: 0,
-  rotate: 0,
-  scale: 1,
-  transition: {
-    type: 'spring',
-    damping: 10,
-    stiffness: 20,
-    mass: 2
-  }
-}
-</script>
-
-<div
-  v-motion
-  :initial="{ x:35, y: 30, opacity: 0}"
-  :enter="{ y: 0, opacity: 1, transition: { delay: 3500 } }">
-
-[Learn more](https://sli.dev/guide/animations.html#motion)
-
-</div>
-
----
-
-# $\LaTeX$
-
-$\LaTeX$ is supported out-of-box. Powered by [$\KaTeX$](https://katex.org/).
-
-<div h-3 />
-
-Inline $\sqrt{3x-1}+(1+x)^2$
-
-Block
-$$ {1|3|all}
-\begin{aligned}
-\nabla \cdot \vec{E} &= \frac{\rho}{\varepsilon_0} \\
-\nabla \cdot \vec{B} &= 0 \\
-\nabla \times \vec{E} &= -\frac{\partial\vec{B}}{\partial t} \\
-\nabla \times \vec{B} &= \mu_0\vec{J} + \mu_0\varepsilon_0\frac{\partial\vec{E}}{\partial t}
-\end{aligned}
-$$
-
-[Learn more](https://sli.dev/features/latex)
-
----
-
-# Diagrams
-
-You can create diagrams / graphs from textual descriptions, directly in your Markdown.
-
-<div class="grid grid-cols-4 gap-5 pt-4 -mb-6">
-
-```mermaid {scale: 0.5, alt: 'A simple sequence diagram'}
-sequenceDiagram
-    Alice->John: Hello John, how are you?
-    Note over Alice,John: A typical interaction
-```
-
-```mermaid {theme: 'neutral', scale: 0.8}
-graph TD
-B[Text] --> C{Decision}
-C -->|One| D[Result 1]
-C -->|Two| E[Result 2]
-```
-
-```mermaid
-mindmap
-  root((mindmap))
-    Origins
-      Long history
-      ::icon(fa fa-book)
-      Popularisation
-        British popular psychology author Tony Buzan
-    Research
-      On effectiveness<br/>and features
-      On Automatic creation
-        Uses
-            Creative techniques
-            Strategic planning
-            Argument mapping
-    Tools
-      Pen and paper
-      Mermaid
-```
-
-```plantuml {scale: 0.7}
-@startuml
-
-package "Some Group" {
-  HTTP - [First Component]
-  [Another Component]
-}
-
-node "Other Groups" {
-  FTP - [Second Component]
-  [First Component] --> FTP
-}
-
-cloud {
-  [Example 1]
-}
-
-database "MySql" {
-  folder "This is my folder" {
-    [Folder 3]
-  }
-  frame "Foo" {
-    [Frame 4]
-  }
-}
-
-[Another Component] --> [Example 1]
-[Example 1] --> [Folder 3]
-[Folder 3] --> [Frame 4]
-
-@enduml
-```
-
-</div>
-
-Learn more: [Mermaid Diagrams](https://sli.dev/features/mermaid) and [PlantUML Diagrams](https://sli.dev/features/plantuml)
-
----
-foo: bar
-dragPos:
-  square: 691,32,167,_,-16
----
-
-# Draggable Elements
-
-Double-click on the draggable elements to edit their positions.
-
-<br>
-
-###### Directive Usage
-
-```md
-<img v-drag="'square'" src="https://sli.dev/logo.png">
-```
-
-<br>
-
-###### Component Usage
-
-```md
-<v-drag text-3xl>
-  <div class="i-carbon:arrow-up" />
-  Use the `v-drag` component to have a draggable container!
-</v-drag>
-```
-
-<v-drag pos="663,206,261,_,-15">
-  <div text-center text-3xl border border-main rounded>
-    Double-click me!
-  </div>
-</v-drag>
-
-<img v-drag="'square'" src="https://sli.dev/logo.png">
-
-###### Draggable Arrow
-
-```md
-<v-drag-arrow two-way />
-```
-
-<v-drag-arrow pos="67,452,253,46" two-way op70 />
-
----
-src: ./pages/imported-slides.md
-hide: false
----
-
----
-
-# Monaco Editor
-
-Slidev provides built-in Monaco Editor support.
-
-Add `{monaco}` to the code block to turn it into an editor:
-
-```ts {monaco}
 import { ref } from 'vue'
-import { emptyArray } from './external'
+import Home from './views/Home.vue'
+import DishList from './views/DishList.vue'
+import About from './views/About.vue'
 
-const arr = ref(emptyArray(10))
+const currentView = ref('home')
+</script>
+
+<template>
+  <nav class="app-nav">
+    <button :class="{ active: currentView === 'home' }" @click="currentView = 'home'">Home</button>
+    <button :class="{ active: currentView === 'dishes' }" @click="currentView = 'dishes'">Dishes</button>
+    <button :class="{ active: currentView === 'about' }" @click="currentView = 'about'">About</button>
+  </nav>
+  <Home v-if="currentView === 'home'" />
+  <DishList v-else-if="currentView === 'dishes'" />
+  <About v-else-if="currentView === 'about'" />
+</template>
 ```
 
-Use `{monaco-run}` to create an editor that can execute the code directly in the slide:
+This works! It's also exactly what's on the `step-1-manual-views` branch.
 
-```ts {monaco-run}
-import { version } from 'vue'
-import { emptyArray, sayHello } from './external'
+---
 
-sayHello()
-console.log(`vue ${version}`)
-console.log(emptyArray<number>(10).reduce(fib => [...fib, fib.at(-1)! + fib.at(-2)!], [1, 1]))
-```
+# What breaks with manual swapping
+
+<v-clicks>
+
+- The URL **never changes** — it's always `/`
+- Refresh the page → you're always back on Home
+- The back/forward buttons do... nothing useful
+- Can't send someone a link straight to "Dishes"
+- Every new "page" means another `v-else-if` — doesn't scale
+
+</v-clicks>
+
+<!-- This list is the whole motivation for the rest of the course — worth lingering on for a moment. -->
+
+---
+
+# LIVE: manual swapping
+
+Time to see it break in real time.
+
+<!-- SWITCH TO BROWSER. `git checkout step-1-manual-views` (dev server keeps running, no restart needed — vue-router is already in package.json from the very first branch, it's just unimported here, mention only if someone notices). Click Home / Dishes / About and point out the URL bar never moves. Refresh mid-"Dishes" to show it resets to Home. Try the back button. -->
 
 ---
 layout: center
-class: text-center
 ---
 
-# Learn More
+# Check-in
 
-[Documentation](https://sli.dev) · [GitHub](https://github.com/slidevjs/slidev) · [Showcases](https://sli.dev/resources/showcases)
+If you had to add **10 more pages** this way, what breaks first?
 
-<PoweredBySlidev mt-10 />
+<!-- ~30s pause. Nudge toward: the v-else-if chain grows forever, and every page still shares the exact same URL problem. -->
+
+---
+
+# Two ways to serve pages
+
+Before we fix this with a router, it's worth naming the two models we're choosing between.
+
+- **MPA** — Multi-Page App: every navigation is a fresh request to a server
+- **SPA** — Single-Page App: one page loads once, then JavaScript takes over navigation
+
+Vue Router is what makes the SPA model possible.
+
+---
+layout: two-cols
+---
+
+# MPA
+
+1. Click a link
+2. Browser sends a full HTTP request
+3. Server sends back a brand-new HTML page
+4. Browser reloads *everything* — HTML, CSS, JS
+
+<v-clicks>
+
+- ✅ Simple mental model
+- ✅ Great for content-heavy, mostly-static sites
+- ❌ Full reload on every navigation
+- ❌ More server load, more bytes over the wire
+
+</v-clicks>
+
+::right::
+
+# SPA
+
+1. Click a link
+2. The router matches it **client-side**
+3. Vue swaps the component in place
+4. The URL updates — no reload at all
+
+<v-clicks>
+
+- ✅ Instant transitions, feels like an app
+- ✅ No full-page reload, state can persist
+- ❌ Bigger initial JS bundle
+- ❌ Client-side routing to set up and maintain
+
+</v-clicks>
+
+<!-- Deliberately a plain two-column list rather than a diagram — sequence diagrams can be fiddly to read live. Keep the pace brisk, this is context-setting, not the main event. -->
+
+---
+layout: center
+---
+
+# Check-in
+
+A blog with 1,000 static articles vs. a live dashboard — which model fits which, and why?
+
+<!-- Quick, ~20s. Nudge toward: content-heavy + rarely-changing favors MPA/static generation, interactive + stateful favors SPA. -->
+
+---
+
+# Enter Vue Router
+
+It solves exactly the pain list from a few slides back:
+
+<v-clicks>
+
+- Maps a **URL** to a **component**
+- Swaps the view **without a full reload**
+- Keeps the URL **in sync** with what's on screen — so refresh, back/forward, and sharing links all just work
+
+</v-clicks>
+
+---
+
+# Anatomy of a router
+
+````md magic-move
+```js
+import { createRouter, createWebHistory } from 'vue-router'
+
+export const router = createRouter({
+  history: createWebHistory(),
+  routes: [],
+})
+```
+```js
+import { createRouter, createWebHistory } from 'vue-router'
+import Home from '../views/Home.vue'
+
+export const router = createRouter({
+  history: createWebHistory(),
+  routes: [
+    { path: '/', name: 'home', component: Home },
+  ],
+})
+```
+```js
+import { createRouter, createWebHistory } from 'vue-router'
+import Home from '../views/Home.vue'
+import DishList from '../views/DishList.vue'
+import About from '../views/About.vue'
+
+export const router = createRouter({
+  history: createWebHistory(),
+  routes: [
+    { path: '/', name: 'home', component: Home },
+    { path: '/dishes', name: 'dishes', component: DishList },
+    { path: '/about', name: 'about', component: About },
+  ],
+})
+```
+````
+
+`createWebHistory()` = real URLs like `/dishes`, no `#` hash.
+
+<!-- This is the exact router/index.js on step-2-basic-routes. Click through the three stages slowly. -->
+
+---
+
+# `App.vue` gets simpler, not more complex
+
+````md magic-move
+```vue
+<script setup>
+import { ref } from 'vue'
+import Home from './views/Home.vue'
+import DishList from './views/DishList.vue'
+import About from './views/About.vue'
+
+const currentView = ref('home')
+</script>
+
+<template>
+  <nav class="app-nav">
+    <button :class="{ active: currentView === 'home' }" @click="currentView = 'home'">Home</button>
+    <button :class="{ active: currentView === 'dishes' }" @click="currentView = 'dishes'">Dishes</button>
+    <button :class="{ active: currentView === 'about' }" @click="currentView = 'about'">About</button>
+  </nav>
+  <Home v-if="currentView === 'home'" />
+  <DishList v-else-if="currentView === 'dishes'" />
+  <About v-else-if="currentView === 'about'" />
+</template>
+```
+```vue
+<script setup>
+</script>
+
+<template>
+  <nav class="app-nav">
+    <router-link :to="{ name: 'home' }">Home</router-link>
+    <router-link :to="{ name: 'dishes' }">Dishes</router-link>
+    <router-link :to="{ name: 'about' }">About</router-link>
+  </nav>
+  <router-view />
+</template>
+```
+````
+
+<v-clicks>
+
+- No more component-switching logic in `App.vue` at all
+- `<router-link>` gets an active-link CSS class for free
+- Back/forward "just works" — the browser's history API does the heavy lifting
+- Routes can be lazy-loaded per page later, for free performance
+
+</v-clicks>
+
+---
+
+# LIVE: basic routing + Devtools
+
+<!-- SWITCH TO BROWSER. `git checkout step-2-basic-routes`. Click through Home / Dishes / About, show the URL changing each time, and that back/forward now actually works. Then open Vue Devtools → Routes tab: show the registered routes and which one is currently matched. This is the payoff for "why is this better than manual swapping." -->
+
+---
+layout: center
+---
+
+# Check-in
+
+In the Devtools Routes tab — what's the current route's `name`?
+
+<!-- Can be answered right there in the browser, no need to flip back to slides first. -->
+
+---
+
+# Problem: one detail page, many dishes
+
+We want a page per dish — but we have 8 dishes, and menus change.
+
+Hand-writing a route for each one doesn't scale:
+
+```js
+{ path: '/dishes/1', component: Dish1 },
+{ path: '/dishes/2', component: Dish2 },
+// ...and so on, forever
+```
+
+<!-- Don't forget to spell out the actual benefit on the next slide — one dynamic route replacing N hardcoded ones is a genuine "aha" moment, easy to rush past. -->
+
+---
+
+# Dynamic segments: `:id`
+
+````md magic-move
+```js
+import { createRouter, createWebHistory } from 'vue-router'
+import Home from '../views/Home.vue'
+import DishList from '../views/DishList.vue'
+import About from '../views/About.vue'
+
+export const router = createRouter({
+  history: createWebHistory(),
+  routes: [
+    { path: '/', name: 'home', component: Home },
+    { path: '/dishes', name: 'dishes', component: DishList },
+    { path: '/about', name: 'about', component: About },
+  ],
+})
+```
+```js
+import { createRouter, createWebHistory } from 'vue-router'
+import Home from '../views/Home.vue'
+import DishList from '../views/DishList.vue'
+import DishDetail from '../views/DishDetail.vue'
+import About from '../views/About.vue'
+
+export const router = createRouter({
+  history: createWebHistory(),
+  routes: [
+    { path: '/', name: 'home', component: Home },
+    { path: '/dishes', name: 'dishes', component: DishList },
+    { path: '/dishes/:id', name: 'dish-detail', component: DishDetail },
+    { path: '/about', name: 'about', component: About },
+  ],
+})
+```
+````
+
+One route (`/dishes/:id`) now matches `/dishes/1`, `/dishes/2`, `/dishes/anything`.
+
+---
+
+# Reading the param: `DishDetail.vue`
+
+```vue
+<script setup>
+import { computed } from 'vue'
+import { useRoute } from 'vue-router'
+import { dishes } from '../data/dishes'
+
+const route = useRoute()
+
+const dish = computed(() => dishes.find((d) => d.id === Number(route.params.id)))
+</script>
+
+<template>
+  <section v-if="dish" class="dish-detail">
+    <h1>{{ dish.name }}</h1>
+    <!-- ... -->
+  </section>
+  <section v-else class="not-found">
+    <h1>Dish not found</h1>
+  </section>
+</template>
+```
+
+<v-click>
+
+Note the `Number(...)` — `route.params.id` is **always a string**, even though our dish IDs are numbers.
+
+</v-click>
+
+---
+
+# LIVE: click into a dish
+
+<!-- SWITCH TO BROWSER. `git checkout step-3-route-params`. Click a dish from the menu, watch the URL become /dishes/3. Then deliberately visit /dishes/999 — the not-found fallback is a good demo beat, don't skip it. Point out the Devtools Routes tab now also shows params: { id: '3' }. -->
+
+---
+layout: center
+---
+
+# Check-in
+
+Our dish IDs are numbers in the data file — but the URL is just text.
+
+Is `route.params.id` a **string** or a **number**? Why does that matter for `dish.id === route.params.id`?
+
+<!-- Plain JS runtime-type question, not about TypeScript. Answer: always a string — that's why DishDetail.vue wraps it in Number(...) before comparing. -->
+
+---
+
+# Problem: filters that disappear
+
+Say we add a category filter and a sort order to the menu table.
+
+If that state lives in a local `ref`... what happens when you:
+
+<v-clicks>
+
+- Refresh the page?
+- Send the link to a friend?
+- Hit the browser's back button?
+
+</v-clicks>
+
+<v-click>
+
+All of it resets. The filter you picked is gone.
+
+</v-click>
+
+---
+
+# Query params: state that lives in the URL
+
+````md magic-move
+```js
+import { ref, computed } from 'vue'
+import { dishes } from '../data/dishes'
+
+const category = ref('all')
+const sort = ref('name')
+
+const filtered = computed(() => {
+  const list = category.value === 'all'
+    ? dishes
+    : dishes.filter((d) => d.category === category.value)
+
+  return [...list].sort((a, b) => {
+    if (sort.value === 'price') return a.price - b.price
+    return a.name.localeCompare(b.name)
+  })
+})
+```
+```js
+import { computed } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
+import { dishes } from '../data/dishes'
+
+const route = useRoute()
+const router = useRouter()
+
+const category = computed(() => route.query.category || 'all')
+const sort = computed(() => route.query.sort || 'name')
+
+function setCategory(event) {
+  router.replace({ query: { ...route.query, category: event.target.value } })
+}
+
+function setSort(event) {
+  router.replace({ query: { ...route.query, sort: event.target.value } })
+}
+
+const filtered = computed(() => {
+  const list = category.value === 'all'
+    ? dishes
+    : dishes.filter((d) => d.category === category.value)
+
+  return [...list].sort((a, b) => {
+    if (sort.value === 'price') return a.price - b.price
+    return a.name.localeCompare(b.name)
+  })
+})
+```
+````
+
+The `filtered` logic barely changes — only *where the state lives* does.
+
+<v-clicks>
+
+- Shareable — the URL fully describes what you're looking at
+- Bookmarkable, survives a refresh
+- Back/forward move through filter changes too
+
+</v-clicks>
+
+---
+
+# LIVE: filter & sort the table
+
+<!-- SWITCH TO BROWSER. `git checkout step-4-query-params`. Change the category and sort dropdowns, show the URL gaining ?category=&sort=. Refresh to prove the filter survives. Copy the URL into a new tab to show it's fully shareable. -->
+
+---
+layout: center
+---
+
+# Check-in
+
+What other bit of UI state might deserve to live in the query string?
+
+<!-- If the room is quiet: pagination page number, active tab, search box text. -->
+
+---
+
+# Recap
+
+<v-clicks>
+
+- No router → manual state, no URL, no back/forward
+- Vue Router → URL-driven navigation, no full reload
+- Route params (`:id`) → one route, many pages
+- Query params (`route.query`) → recoverable, shareable UI state
+
+</v-clicks>
+
+| Branch | Covers |
+|---|---|
+| `step-0-foundation` | Starting point |
+| `step-1-manual-views` | Why we need a router |
+| `step-2-basic-routes` | Navigation, Devtools |
+| `step-3-route-params` | Route params |
+| `step-4-query-params` | Query params |
+
+<!-- Optional — skip this if you're short on time, it's just the README table restated. -->
