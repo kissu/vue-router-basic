@@ -16,7 +16,7 @@ import { dishes } from '../data/dishes'
       <tbody>
         <tr v-for="dish in dishes" :key="dish.id">
           <td>{{ dish.emoji }} {{ dish.name }}</td>
-          <td>{{ dish.category }}</td>
+          <td><span class="badge" :class="`badge--${dish.category}`">{{ dish.category }}</span></td>
           <td>${{ dish.price.toFixed(2) }}</td>
         </tr>
       </tbody>
