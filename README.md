@@ -67,7 +67,7 @@ cd slides
 pnpm build   # outputs to slides/dist
 ```
 
-Root directory `slides`, build command `pnpm run build`, output directory `dist`. **One gotcha:** Slidev's build automatically generates `dist/_redirects` with a Netlify-style `/* /index.html 200` rule. That exact rule causes an infinite-redirect deploy failure specifically on Cloudflare Pages — delete `dist/_redirects` before deploying there. Slidev's `dist/404.html` (identical to `index.html`) is fine to keep; it's what actually provides the SPA fallback on Cloudflare and elsewhere.
+Root directory `slides`, build command `pnpm run build`, output directory `dist`. **One gotcha:** Slidev's build automatically generates `dist/_redirects` with a Netlify-style `/* /index.html 200` rule. That exact rule causes an infinite-redirect deploy failure specifically on Cloudflare Pages — a `postbuild` script in `slides/package.json` deletes it automatically after every build, so no manual step is needed. Slidev's `dist/404.html` (identical to `index.html`) is fine to keep; it's what actually provides the SPA fallback on Cloudflare and elsewhere.
 
 Neither project needs a `wrangler.toml`.
 

@@ -4,6 +4,7 @@
   "private": true,
   "scripts": {
     "build": "slidev build",
+    "postbuild": "rm -f dist/_redirects",
     "dev": "slidev --open",
     "export": "slidev export"
   },

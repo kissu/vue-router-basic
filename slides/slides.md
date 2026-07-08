@@ -12,10 +12,6 @@ transition: slide-left
 
 Routes · Params · Navigation
 
-<div class="pt-8 opacity-70">
-A hands-on 30-minute tour, for people who already know Vue
-</div>
-
 <!-- Confirm screen share is up. Have the demo repo open in one terminal pane (pnpm dev already running) and a browser tab ready in another — you'll switch over to the browser several times today. -->
 
 ---
@@ -42,8 +38,6 @@ Our demo app — **The Router Bistro** — has three "pages": Home, Dishes, Abou
 
 We haven't touched routing yet. So how do we show different content for each one?
 
-The obvious answer: some state that says "which page am I on", and a big conditional.
-
 <!-- Pause and ask the room how THEY'd solve this with what they already know (v-if? v-show?). Let a couple of answers land before revealing the next slide. -->
 
 ---
@@ -66,6 +60,7 @@ const currentView = ref('home')
     <button :class="{ active: currentView === 'dishes' }" @click="currentView = 'dishes'">Dishes</button>
     <button :class="{ active: currentView === 'about' }" @click="currentView = 'about'">About</button>
   </nav>
+
   <Home v-if="currentView === 'home'" />
   <DishList v-else-if="currentView === 'dishes'" />
   <About v-else-if="currentView === 'about'" />
@@ -123,6 +118,14 @@ Before we fix this with a router, it's worth naming the two models we're choosin
 
 Vue Router is what makes the SPA model possible.
 
+<!--
+
+https://astro.build/
+
+https://vuejs.org/
+
+-->
+
 ---
 layout: two-cols
 ---
@@ -171,7 +174,13 @@ layout: center
 
 A blog with 1,000 static articles vs. a live dashboard — which model fits which, and why?
 
-<!-- Quick, ~20s. Nudge toward: content-heavy + rarely-changing favors MPA/static generation, interactive + stateful favors SPA. -->
+<!-- Quick, ~20s. Nudge toward: content-heavy + rarely-changing favors MPA/static generation, interactive + stateful favors SPA.
+
+consider difference between:
+- reddit (SSR) or a blog post (SSG)
+- netflix or bank or twitter (SPA)
+
+-->
 
 ---
 
@@ -253,6 +262,7 @@ const currentView = ref('home')
     <button :class="{ active: currentView === 'dishes' }" @click="currentView = 'dishes'">Dishes</button>
     <button :class="{ active: currentView === 'about' }" @click="currentView = 'about'">About</button>
   </nav>
+
   <Home v-if="currentView === 'home'" />
   <DishList v-else-if="currentView === 'dishes'" />
   <About v-else-if="currentView === 'about'" />
@@ -268,6 +278,7 @@ const currentView = ref('home')
     <router-link :to="{ name: 'dishes' }">Dishes</router-link>
     <router-link :to="{ name: 'about' }">About</router-link>
   </nav>
+
   <router-view />
 </template>
 ```
@@ -292,16 +303,6 @@ const currentView = ref('home')
 # LIVE: basic routing + Devtools
 
 <!-- SWITCH TO BROWSER. `git checkout step-2-basic-routes`. Click through Home / Dishes / About, show the URL changing each time, and that back/forward now actually works. Then open Vue Devtools → Routes tab: show the registered routes and which one is currently matched. This is the payoff for "why is this better than manual swapping." -->
-
----
-layout: center
----
-
-# Check-in
-
-In the Devtools Routes tab — what's the current route's `name`?
-
-<!-- Can be answered right there in the browser, no need to flip back to slides first. -->
 
 ---
 
@@ -471,23 +472,16 @@ import { dishes } from '../data/dishes'
 
 const route = useRoute()
 const router = useRouter()
-
 const category = computed(() => route.query.category || 'all')
 const sort = computed(() => route.query.sort || 'name')
 
-function setCategory(event) {
-  router.replace({ query: { ...route.query, category: event.target.value } })
-}
-
-function setSort(event) {
-  router.replace({ query: { ...route.query, sort: event.target.value } })
-}
+function setCategory(e) { router.replace({ query: { ...route.query, category: e.target.value } }) }
+function setSort(e) { router.replace({ query: { ...route.query, sort: e.target.value } }) }
 
 const filtered = computed(() => {
   const list = category.value === 'all'
     ? dishes
     : dishes.filter((d) => d.category === category.value)
-
   return [...list].sort((a, b) => {
     if (sort.value === 'price') return a.price - b.price
     return a.name.localeCompare(b.name)
@@ -498,7 +492,7 @@ const filtered = computed(() => {
 
 <style>
 .slidev-layout pre,
-.slidev-layout .shiki-magic-move-container { font-size: 0.68em; line-height: 1.3; }
+.slidev-layout .shiki-magic-move-container { font-size: 0.78em; line-height: 1.35; }
 </style>
 
 ---
